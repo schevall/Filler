@@ -15,6 +15,8 @@ FLAGS = -Wall -Wextra -Werror
 SRC_NAME = main.c\
 			parse_grid.c\
 			parse_piece.c\
+			parse_point.c\
+			calculator.c\
 			error_handler.c\
 			printer.c
 

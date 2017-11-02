@@ -37,6 +37,7 @@ typedef struct s_struct
 	t_piece		*piece; // current piece to play
 	int			size[2]; // sent by plateau type line from vm
 	char		**grid; // current state of the grid
+	t_point		**my_points;
 	int			grid_init;
 }				t_struct;
 
@@ -45,6 +46,9 @@ void			parse_grid_size(char *line, t_struct **filler);
 void			parse_grid_state(char *line, t_struct **filler);
 void			parse_piece_size(char *line, t_struct **filler);
 void			parse_piece_state(char *line, t_struct **filler);
+int			 	who_is_it(char grid_pt, int player);
+t_point			*make_point(int x, int y);
+t_point			**make_point_list(int nb);
 void			shoot(t_struct **filler);
 void			error_handling(char *reason);
 

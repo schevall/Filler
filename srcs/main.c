@@ -23,6 +23,7 @@ t_struct *init_struct(t_struct *filler)
 	filler->next_action = PARSE_PLAYER;
 	filler->grid = NULL;
 	filler->grid_init = INIT_GRID;
+	filler->my_points = NULL;
 	if(!(piece = (t_piece*)ft_memalloc(sizeof(t_piece))))
 		error_handling("MALLOC");
 	filler->piece = piece;
@@ -42,30 +43,6 @@ void init_player(char *line, t_struct **filler)
 	(*filler)->next_action = PARSE_GRID_SIZE;
 }
 
-void	shoot(t_struct **filler)
-{
-	int y;
-	int x;
-	int coord[2];
-
-	y = -1;
-	print_grid(filler);
-	print_points(filler);
-	while ((*filler)->grid[++y]) {
-		x = -1;
-		while ((*filler)->grid[y][++x]) {
-			if ((*filler)->grid[y][x] == 'X' || (*filler)->grid[y][x] == 'x') {
-				coord[0] = x - (*filler)->piece->points[0].x;
-				coord[1] = y - (*filler)->piece->points[0].y;
-			}
-		}
-	}
-	ft_printf_fd(2, "About to shoot x:%d, y:%d\n", coord[0], coord[1]);
-	ft_printf("%d %d\n", coord[1], coord[0]);
-	(*filler)->grid_init = RESET_GRID;
-	return;
-}
-
 void get_line_type(char *line, t_struct **filler)
 {
 	if ((*filler)->next_action == PARSE_PLAYER)
@@ -80,6 +57,8 @@ void get_line_type(char *line, t_struct **filler)
 		parse_piece_size(line, filler);
 	else if ((*filler)->next_action == PARSE_PIECE_STATE)
 		parse_piece_state(line, filler);
+	if ((*filler)->next_action == SHOOT)
+		shoot(filler);
 }
 
 int		main(int ac, char **av)
@@ -98,8 +77,10 @@ int		main(int ac, char **av)
 	filler = init_struct(filler);
 	while (get_next_line(0, &line) > 0)
 	{
+		ft_printf_fd(2, "line: %s\n", line);
 		get_line_type(line, &filler);
-		print_struct(fd, filler, turn++, line);
+		ft_printf_fd(fd, "%s\n", line);
 	}
+	ft_printf_fd(2, "ending\n");
 	return (0);
 }

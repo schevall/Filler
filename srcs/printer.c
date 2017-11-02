@@ -30,7 +30,7 @@ void	print_points(t_struct **filler)
 
 	i = 0;
 	y = -1;
-	ft_printf_fd(2, "About to print point\n");
+	ft_printf_fd(2, "About to print point: pt_nb:%d\n", (*filler)->piece->pt_nb);
 	while (++y < size[1]) {
 		x = -1;
 		while(++x < size[0]) {

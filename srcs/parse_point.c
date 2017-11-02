@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parse_piece.c                                      :+:      :+:    :+:   */
+/*   parse_point.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: schevall <schevall@4student.42.fr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -12,32 +12,36 @@
 
 #include "./includes/filler.h"
 
-void	parse_piece_size(char *line, t_struct **filler)
+int 	who_is_it(char grid_pt, int player)
 {
-	char **tab;
-
-	tab = ft_strsplit_whitespace(line);
-	(*filler)->piece->size[0] = ft_atoi(tab[2]);
-	(*filler)->piece->size[1] = ft_atoi(tab[1]);
-	(*filler)->next_action = PARSE_PIECE_STATE;
+	char *me;
+	if (player == 1)
+		me = "Oo";
+	else
+		me = "Xx";
+	if (grid_pt == '.')
+		return 0;
+	if (grid_pt == me[0] || grid_pt == me[1])
+		return 1;
+	return 2;
 }
 
-void	parse_piece_state(char *line, t_struct **filler)
+t_point		*make_point(int x, int y)
 {
-	int x;
-	int y;
+	t_point *point;
 
-	x = -1;
-	y = (*filler)->piece_line;
-	// ft_printf_fd(2, "\n PARSE_PIECE_STATE: y:%d target=:%d \n", y, (*filler)->piece->size[1]);
-	while (line[++x]) {
-		if (line[x] == '*')
-			(*filler)->piece->points[(*filler)->piece->pt_nb++]
-			= *make_point(x, y);
-	}
-	(*filler)->piece_line++;
-	if ((*filler)->piece_line == (*filler)->piece->size[1]) {
-		(*filler)->next_action = SHOOT;
-		return;
-	}
+	if (!(point = (t_point*)ft_memalloc(sizeof(t_point))))
+		error_handling("MALLOC");
+	point->x = x;
+	point->y = y;
+	return point;
+}
+
+t_point		**make_point_list(int nb)
+{
+	t_point **point_list;
+
+	if (!(point_list = (t_point**)ft_memalloc(sizeof(t_point*) * (nb + 1))))
+		error_handling("MALLOC");
+	return point_list;
 }
