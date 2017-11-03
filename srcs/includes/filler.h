@@ -26,7 +26,7 @@ typedef struct s_piece
 {
 	int			pt_nb; // point number
 	int			size[2]; // size x y of the piece sent by vm
-	t_point 	*points; // point coordinates of the piece
+	t_point 	**points; // point coordinates of the piece
 }				t_piece;
 
 typedef struct s_struct
@@ -38,7 +38,9 @@ typedef struct s_struct
 	int			size[2]; // sent by plateau type line from vm
 	char		**grid; // current state of the grid
 	t_point		**my_points;
+	int			my_pt_nb;
 	int			grid_init;
+	int			strat;
 }				t_struct;
 
 void			parse_player(char *line, t_struct **filler);
@@ -49,11 +51,13 @@ void			parse_piece_state(char *line, t_struct **filler);
 int			 	who_is_it(char grid_pt, int player);
 t_point			*make_point(int x, int y);
 t_point			**make_point_list(int nb);
+int				count_me_on_map(t_struct **filler);
 void			shoot(t_struct **filler);
+void			reinit_filler(t_struct **filler);
+void			free_point_list(t_point **points, char *str);
 void			error_handling(char *reason);
 
-void			print_struct(int fd, t_struct *filler, int turn, char *line);
-void			print_points(t_struct **filler);
+void			print_piece(t_piece *piece, char *str);
 void			print_grid(t_struct **filler);
 
 typedef enum Actions Actions;
@@ -69,6 +73,17 @@ enum Actions
 	INIT_GRID, // 7
 	RESET_GRID, //8
 	KEEP_GRID, // 9
+	REINIT, // 10,
+};
+
+typedef enum Strat Strat;
+enum Strat
+{
+	GO_LU, // 0
+	GO_LD, // 1
+	GO_RU, // 2
+	GO_RD, // 3
+	GO_MID,
 };
 
 #endif

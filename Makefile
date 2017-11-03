@@ -17,6 +17,7 @@ SRC_NAME = main.c\
 			parse_piece.c\
 			parse_point.c\
 			calculator.c\
+			free.c\
 			error_handler.c\
 			printer.c
 

@@ -18,16 +18,22 @@ int			check_pos(t_struct **filler, t_point *target)
 	int x;
 	int y;
 	int k;
+	int p;
 
 	i = -1;
 	k = 0;
 	ft_printf_fd(2, "check_pos\n");
 	while (++i < (*filler)->piece->pt_nb) {
-		x = target->x + (*filler)->piece->points[i].x;
-		y = target->y + (*filler)->piece->points[i].y;
+		x = target->x + (*filler)->piece->points[i]->x;
+		y = target->y + (*filler)->piece->points[i]->y;
 		ft_printf_fd(2, "check_pos iter k: %d x: %*d y: %*d\n", k, 2, x, 2, y);
-		if (who_is_it((*filler)->grid[y][x], (*filler)->player_num) == 1)
+		p = who_is_it((*filler)->grid[y][x], (*filler)->player_num);
+		if (p == 1)
 			k++;
+		else if (p == 2) {
+			k = 0;
+			break;
+		}
 	}
 	ft_printf_fd(2, "check_pos k: %d\n", k);
 	return k == 1 ? 1 : 0;
@@ -43,8 +49,8 @@ int			is_in(t_struct **filler, int xt, int yt)
 	i = -1;
 	size = (*filler)->size;
 	while (++i < (*filler)->piece->pt_nb) {
-		x = xt + (*filler)->piece->points[i].x;
-		y = yt + (*filler)->piece->points[i].y;
+		x = xt + (*filler)->piece->points[i]->x;
+		y = yt + (*filler)->piece->points[i]->y;
 		if (x < 0 || y < 0 || x >= size[0] || y >= size[1])
 			return 0;
 	}
@@ -58,15 +64,17 @@ t_point		**get_possible_coord(t_struct **filler, t_point *target)
 	int x;
 	int y;
 
+	ft_printf_fd(2, "start get_possible_coord \n");
 	possibilities = make_point_list((*filler)->piece->pt_nb);
 	i = -1;
 	while (++i < (*filler)->piece->pt_nb) {
-		x = target->x - (*filler)->piece->points[i].x;
-		y = target->y - (*filler)->piece->points[i].y;
+		x = target->x - (*filler)->piece->points[i]->x;
+		y = target->y - (*filler)->piece->points[i]->y;
 		if (is_in(filler, x, y))
 			possibilities[i] = make_point(x, y);
 
 	}
+	ft_printf_fd(2, "end get_possible_coord \n");
 	return possibilities;
 }
 
@@ -74,17 +82,23 @@ t_point		*can_position_accept_piece(t_struct **filler, t_point *target)
 {
 	int i;
 	t_point **pos_target;
+	t_point *result;
 
 	i = -1;
+	result = NULL;
 	pos_target = get_possible_coord(filler, target);
 	ft_printf_fd(2, "can_position_accept_piece\n");
 	// ft_printf_fd(2, "is point possible: x:%*d, y:%*d\n", 2, x, 2, y);
 	while (pos_target[++i]) {
 		ft_printf_fd(2, "can_position_accept_piece possible: i: %d, x: %d, y: %d\n", i, pos_target[i]->x, pos_target[i]->y);
-		if (check_pos(filler, pos_target[i]) == 1)
-			return pos_target[i];
+		if (check_pos(filler, pos_target[i]) == 1) {
+			ft_printf_fd(2, "can_position_accept_piece RETURN: i: %d, x: %d, y: %d\n", i, pos_target[i]->x, pos_target[i]->y);
+			result = make_point(pos_target[i]->x, pos_target[i]->y);
+			break;
+		}
 	}
-	return NULL;
+	free_point_list(pos_target, "after can_position_accept_piece");
+	return result;
 }
 
 void	shoot(t_struct **filler)
@@ -94,18 +108,18 @@ void	shoot(t_struct **filler)
 
 	i = -1;
 	print_grid(filler);
-	print_points(filler);
+	print_piece((*filler)->piece, "before calcul");
 	// print_my_positions(filler);
-	ft_printf_fd(2, "Shoot size[0]:%d, size[1]:%d\n", (*filler)->size[0], (*filler)->size[1]);
+	// ft_printf_fd(2, "Shoot size[0]:%d, size[1]:%d\n", (*filler)->size[0], (*filler)->size[1]);
 	while ((*filler)->my_points[++i]) {
 		shoot = can_position_accept_piece(filler, (*filler)->my_points[i]);
 		if (shoot) {
 			ft_printf_fd(2, "About to shoot x:%d, y:%d\n", shoot->x, shoot->y);
-			ft_printf("%d %d\n", shoot->x, shoot->y);
+			ft_printf("%d %d\n", shoot->y, shoot->x);
 			(*filler)->grid_init = RESET_GRID;
-			(*filler)->next_action = PARSE_PIECE_SIZE;
-			ft_printf_fd(2, "About to shoot x:%d, y:%d\n", shoot->x, shoot->y);
+			(*filler)->next_action = REINIT;
 			return;
 		}
 	}
+	return;
 }

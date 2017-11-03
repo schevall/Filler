@@ -39,34 +39,60 @@ void	get_my_points(t_struct **filler)
 	t_point **my_points;
 	int	my_pt;
 
+	my_points = make_point_list(count_me_on_map(filler));
 	my_pt = 0;
 	y = -1;
-	ft_printf_fd(2, "get_my_points\n");
-	while (++y < (*filler)->size[1]){
-		x = -1;
-		while (++x < (*filler)->size[0]) {
-			if (who_is_it((*filler)->grid[y][x], (*filler)->player_num) == 1)
-				my_pt++;
-		}
-	}
-	ft_printf_fd(2, "get_my_points my_pt: %d\n", my_pt);
-	ft_printf_fd(2, "get_my_points size: %d %d\n", (*filler)->size[0], (*filler)->size[1]);
-	if (!(my_points = (t_point**)ft_memalloc(sizeof(t_point*) * (my_pt + 1))))
-		error_handling("MALLOC");
-	y = -1;
-	my_pt = 0;
 	while (++y < (*filler)->size[1]){
 		x = -1;
 		while (++x < (*filler)->size[0]) {
 			if (who_is_it((*filler)->grid[y][x], (*filler)->player_num) == 1) {
-				ft_printf_fd(2, "in while: x:%*d, y:%*d\n", 2, x, 2, y);
+				ft_printf_fd(2, "get_my_points: my_pt: %d\n", my_pt);
 				my_points[my_pt] = make_point(x, y);
 				my_pt++;
 			}
 		}
 	}
+	(*filler)->my_pt_nb = my_pt;
 	(*filler)->my_points = my_points;
-	ft_printf_fd(2, "get_my_points\n");
+	ft_printf_fd(2, "get_my_points pt_nb: %d\n", my_pt);
+}
+// GO_LU, // 0
+// GO_LD, // 1
+// GO_RU, // 3
+// GO_RD, //
+
+t_point	*get_optimun(t_struct **filler)
+{
+	t_point *point;
+
+	if ((*filler)->strat == GO_LU)
+		point = make_point(0, 0);
+	else if ((*filler)->strat == GO_LD)
+		point = make_point(0, (*filler)->size[1] - 1);
+	else if ((*filler)->strat == GO_RU)
+		point = make_point((*filler)->size[0] - 1, 0);
+	else if ((*filler)->strat == GO_RD)
+		point = make_point((*filler)->size[0] - 1, (*filler)->size[1] - 1);
+	else if ((*filler)->strat == GO_MID)
+		point = make_point((*filler)->size[0] / 2, (*filler)->size[1] / 2);
+	return point;
+}
+
+void	sort_my_points(t_struct **filler)
+{
+	t_point **my_points;
+	t_point	*opti;
+	int i;
+
+	if ((*filler)->my_pt_nb == 1)
+		return;
+	my_points = make_point_list((*filler)->my_pt_nb);
+	opti = get_optimun(filler);
+	i = -1;
+	while (++i < (*filler)->my_pt_nb) {
+		
+	}
+
 }
 
 void	parse_grid_state(char *line, t_struct **filler)
@@ -79,6 +105,7 @@ void	parse_grid_state(char *line, t_struct **filler)
 		(*filler)->grid_init = KEEP_GRID;
 	}
 	else if ((*filler)->grid_init == RESET_GRID) {
+		ft_printf_fd(2, "PARSE_GRID_STATE RESET\n");
 		ft_strdel_tab((*filler)->grid);
 		(*filler)->grid = new_grid((*filler)->size[1]);
 		(*filler)->grid_init = KEEP_GRID;
@@ -91,7 +118,7 @@ void	parse_grid_state(char *line, t_struct **filler)
 	if (current_y == (*filler)->size[1] - 1) {
 		print_grid(filler);
 		get_my_points(filler);
-		ft_printf_fd(2, "endih\n");
+		sort_my_points(filler);
 		(*filler)->next_action = PARSE_PIECE_SIZE;
 	}
 }

@@ -15,7 +15,7 @@
 t_struct *init_struct(t_struct *filler)
 {
 	t_piece *piece;
-	t_point *points;
+	t_point **points;
 
 	if(!(filler = (t_struct*)ft_memalloc(sizeof(t_struct))))
 		error_handling("MALLOC");
@@ -24,13 +24,15 @@ t_struct *init_struct(t_struct *filler)
 	filler->grid = NULL;
 	filler->grid_init = INIT_GRID;
 	filler->my_points = NULL;
+	filler->my_pt_nb = 0;
 	if(!(piece = (t_piece*)ft_memalloc(sizeof(t_piece))))
 		error_handling("MALLOC");
 	filler->piece = piece;
-	if(!(points = (t_point*)ft_memalloc(sizeof(t_point) * 100)))
+	if(!(points = (t_point**)ft_memalloc(sizeof(t_point*) * 100)))
 		error_handling("MALLOC");
 	filler->piece->points = points;
 	filler->piece->pt_nb = 0;
+	filler->strat = STRAT_GO_MID;
 	return filler;
 }
 
@@ -43,8 +45,11 @@ void init_player(char *line, t_struct **filler)
 	(*filler)->next_action = PARSE_GRID_SIZE;
 }
 
+
 void get_line_type(char *line, t_struct **filler)
 {
+	if ((*filler)->next_action == REINIT)
+	reinit_filler(filler);
 	if ((*filler)->next_action == PARSE_PLAYER)
 		init_player(line, filler);
 	else if ((*filler)->next_action == PARSE_GRID_SIZE)
@@ -77,9 +82,9 @@ int		main(int ac, char **av)
 	filler = init_struct(filler);
 	while (get_next_line(0, &line) > 0)
 	{
-		ft_printf_fd(2, "line: %s\n", line);
+		ft_printf_fd(2, "\nstart line: %s\n", line);
 		get_line_type(line, &filler);
-		ft_printf_fd(fd, "%s\n", line);
+		ft_printf_fd(fd, "end line: %s\n", line);
 	}
 	ft_printf_fd(2, "ending\n");
 	return (0);

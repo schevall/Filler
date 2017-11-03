@@ -15,26 +15,24 @@ void	print_struct(int fd, t_struct *filler, int turn, char *line)
 		ft_printf_fd(fd, "piece_pt_nb: %d\n", filler->piece->pt_nb);
 		ft_printf_fd(fd, "piece_size: x:%d, y:%d\n", filler->piece->size[0], filler->piece->size[1]);
 		while(++i < filler->piece->pt_nb)
-			ft_printf_fd(fd, "piece_point n[%d]: x:%d, y:%d\n", i, filler->piece->points[i].x, filler->piece->points[i].y);
+			ft_printf_fd(fd, "piece_point n[%d]: x:%d, y:%d\n", i, filler->piece->points[i]->x, filler->piece->points[i]->y);
 	}
 }
 
-void	print_points(t_struct **filler)
+void	print_piece(t_piece *piece, char *str)
 {
-	t_point *points = (*filler)->piece->points;
-	int pt_nb = (*filler)->piece->pt_nb;
-	int *size = (*filler)->piece->size;
 	int i;
 	int x;
 	int y;
 
 	i = 0;
 	y = -1;
-	ft_printf_fd(2, "About to print point: pt_nb:%d\n", (*filler)->piece->pt_nb);
-	while (++y < size[1]) {
+	ft_printf_fd(2, "About to print piece: %s\n", str);
+	ft_printf_fd(2, "About to print piece: pt_nb:%d, size: %d %d\n", piece->pt_nb, piece->size[0], piece->size[1]);
+	while (++y < piece->size[1]) {
 		x = -1;
-		while(++x < size[0]) {
-			if (points[i].y == y && points[i].x == x) {
+		while(++x < piece->size[0]) {
+			if (piece->points[i] && piece->points[i]->y == y && piece->points[i]->x == x) {
 				ft_printf_fd(2, "*");
 				i++;
 			}

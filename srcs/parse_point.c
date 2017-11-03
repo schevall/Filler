@@ -41,7 +41,27 @@ t_point		**make_point_list(int nb)
 {
 	t_point **point_list;
 
+	ft_printf_fd(2, "make_point_list nb: %d\n", nb);
 	if (!(point_list = (t_point**)ft_memalloc(sizeof(t_point*) * (nb + 1))))
 		error_handling("MALLOC");
+	ft_printf_fd(2, "make_point_list end\n");
 	return point_list;
+}
+
+int			count_me_on_map(t_struct **filler)
+{
+	int x;
+	int y;
+	int	my_pt;
+
+	my_pt = 0;
+	y = -1;
+	while (++y < (*filler)->size[1]){
+		x = -1;
+		while (++x < (*filler)->size[0]) {
+			if (who_is_it((*filler)->grid[y][x], (*filler)->player_num) == 1)
+				my_pt++;
+		}
+	}
+	return my_pt;
 }
