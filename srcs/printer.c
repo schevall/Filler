@@ -53,3 +53,15 @@ void print_grid(t_struct **filler)
 		ft_printf_fd(2, "%s\n", (*filler)->grid[y]);
 	}
 }
+
+void	print_point_list(t_point **list, char *str)
+{
+	int i;
+
+	ft_printf_fd(2, "\nAbout to print point list: %s\n", str);
+	i = -1;
+	while (list[++i]) {
+		ft_printf_fd(2, "x: %2d, y: %2d, id: %2d\n", list[i]->x, list[i]->y, list[i]->id);
+	}
+	ft_printf_fd(2, "\nEnd to print point list: %s\n", str);
+}

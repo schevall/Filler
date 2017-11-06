@@ -26,7 +26,7 @@ int 	who_is_it(char grid_pt, int player)
 	return 2;
 }
 
-t_point		*make_point(int x, int y)
+t_point		*make_point(int x, int y, int id)
 {
 	t_point *point;
 
@@ -34,6 +34,7 @@ t_point		*make_point(int x, int y)
 		error_handling("MALLOC");
 	point->x = x;
 	point->y = y;
+	point->id = id;
 	return point;
 }
 
@@ -41,10 +42,9 @@ t_point		**make_point_list(int nb)
 {
 	t_point **point_list;
 
-	ft_printf_fd(2, "make_point_list nb: %d\n", nb);
+		// ft_printf_fd(2, "make_point_list pt_nb: %d\n", nb);
 	if (!(point_list = (t_point**)ft_memalloc(sizeof(t_point*) * (nb + 1))))
 		error_handling("MALLOC");
-	ft_printf_fd(2, "make_point_list end\n");
 	return point_list;
 }
 

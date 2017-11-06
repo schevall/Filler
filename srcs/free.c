@@ -17,11 +17,11 @@ void	free_point_list(t_point **points, char *str)
 	int i;
 
 	i = -1;
-	ft_printf_fd(2, "start free_point_list on %s\n", str);
+	// ft_printf_fd(2, "start free_point_list on %s\n", str);
 	while (points[++i])
 		free(points[i]);
 	free(points);
-	ft_printf_fd(2, "end free_point_list on %s\n", str);
+	// ft_printf_fd(2, "end free_point_list on %s\n", str);
 }
 
 void	reinit_piece(t_piece *piece)

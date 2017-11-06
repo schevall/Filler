@@ -12,7 +12,7 @@
 
 #include "./includes/filler.h"
 
-t_struct *init_struct(t_struct *filler)
+t_struct *init_struct(t_struct *filler, int fd)
 {
 	t_piece *piece;
 	t_point **points;
@@ -32,7 +32,9 @@ t_struct *init_struct(t_struct *filler)
 		error_handling("MALLOC");
 	filler->piece->points = points;
 	filler->piece->pt_nb = 0;
-	filler->strat = STRAT_GO_MID;
+	filler->strat = GO_MID;
+	filler->fd = fd;
+	filler->turn = 0;
 	return filler;
 }
 
@@ -77,14 +79,14 @@ int		main(int ac, char **av)
 
 	fp = fopen("./log.txt", "w");
 	fd = fileno(fp);
-	turn = 1;
 	fd = open("./log.txt", O_WRONLY);
-	filler = init_struct(filler);
+	filler = init_struct(filler, fd);
 	while (get_next_line(0, &line) > 0)
 	{
-		ft_printf_fd(2, "\nstart line: %s\n", line);
 		get_line_type(line, &filler);
-		ft_printf_fd(fd, "end line: %s\n", line);
+		ft_printf_fd(2, "\nturn :%2d strat: %d\n", filler->turn, filler->strat);
+		if (filler->turn == 10)
+			exit(0);
 	}
 	ft_printf_fd(2, "ending\n");
 	return (0);

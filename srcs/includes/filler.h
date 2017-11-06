@@ -20,7 +20,16 @@ typedef struct s_point
 {
 	int x;
 	int y;
+	int id;
 }				t_point;
+
+typedef struct s_opti
+{
+	t_point *mid;
+	t_point *ld;
+	t_point *ru;
+	t_point *
+}
 
 typedef struct s_piece
 {
@@ -41,6 +50,8 @@ typedef struct s_struct
 	int			my_pt_nb;
 	int			grid_init;
 	int			strat;
+	int			turn;
+	int			fd;
 }				t_struct;
 
 void			parse_player(char *line, t_struct **filler);
@@ -49,9 +60,10 @@ void			parse_grid_state(char *line, t_struct **filler);
 void			parse_piece_size(char *line, t_struct **filler);
 void			parse_piece_state(char *line, t_struct **filler);
 int			 	who_is_it(char grid_pt, int player);
-t_point			*make_point(int x, int y);
+t_point			*make_point(int x, int y, int id);
 t_point			**make_point_list(int nb);
 int				count_me_on_map(t_struct **filler);
+t_point			**sort_points(t_struct **filler, t_point **list, int nb);
 void			shoot(t_struct **filler);
 void			reinit_filler(t_struct **filler);
 void			free_point_list(t_point **points, char *str);
@@ -59,6 +71,7 @@ void			error_handling(char *reason);
 
 void			print_piece(t_piece *piece, char *str);
 void			print_grid(t_struct **filler);
+void 			print_point_list(t_point **list, char *str);
 
 typedef enum Actions Actions;
 enum Actions
@@ -83,7 +96,7 @@ enum Strat
 	GO_LD, // 1
 	GO_RU, // 2
 	GO_RD, // 3
-	GO_MID,
+	GO_MID, // 4
 };
 
 #endif
