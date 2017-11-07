@@ -19,7 +19,10 @@ SRC_NAME = main.c\
 			calculator.c\
 			free.c\
 			error_handler.c\
-			printer.c
+			printer.c\
+			new_grid.c\
+			sort_point.c\
+			point_list_len.c\
 
 SRC_PATH = ./srcs/
 SRCS = $(addprefix $(SRC_PATH), $(SRCS_NAME))

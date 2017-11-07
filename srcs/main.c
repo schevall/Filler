@@ -32,8 +32,11 @@ t_struct *init_struct(t_struct *filler, int fd)
 		error_handling("MALLOC");
 	filler->piece->points = points;
 	filler->piece->pt_nb = 0;
-	filler->strat = GO_MID;
 	filler->fd = fd;
+	filler->start = 0;
+	filler->strat_y = 1;
+	filler->strat_x = 1;
+	filler->mid_reached = 0;
 	filler->turn = 0;
 	return filler;
 }
@@ -84,8 +87,8 @@ int		main(int ac, char **av)
 	while (get_next_line(0, &line) > 0)
 	{
 		get_line_type(line, &filler);
-		ft_printf_fd(2, "\nturn :%2d strat: %d\n", filler->turn, filler->strat);
-		if (filler->turn == 10)
+		// ft_printf_fd(2, "\nturn :%2d strat: %d\n", filler->turn, filler->strat);
+		if (filler->turn >= 15)
 			exit(0);
 	}
 	ft_printf_fd(2, "ending\n");

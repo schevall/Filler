@@ -103,6 +103,7 @@ size_t				ft_word_len(const char *s, size_t i, char c);
 size_t				ft_word_len_whitespace(const char *s, size_t i);
 size_t				ft_count_word(char const *s, char c);
 size_t				ft_count_word_whitespace(char const *s);
+int					ft_sqrt(int nb);
 uintmax_t			ft_power(int nb, int power);
 void				*ft_memdup(const void *s, size_t n);
 int					get_next_line(const int fd, char **line);

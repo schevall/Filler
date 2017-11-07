@@ -23,13 +23,13 @@ typedef struct s_point
 	int id;
 }				t_point;
 
-typedef struct s_opti
-{
-	t_point *mid;
-	t_point *ld;
-	t_point *ru;
-	t_point *
-}
+// typedef struct s_opti
+// {
+// 	t_point *mid;
+// 	t_point *ld;
+// 	t_point *ru;
+// 	t_point *
+// }
 
 typedef struct s_piece
 {
@@ -49,11 +49,16 @@ typedef struct s_struct
 	t_point		**my_points;
 	int			my_pt_nb;
 	int			grid_init;
-	int			strat;
+	int			strat_x;
+	int			strat_y;
+	int			start;
+	int 		mid_reached;
 	int			turn;
 	int			fd;
 }				t_struct;
 
+char			**new_grid(int nb);
+int				p_len(t_point **list);
 void			parse_player(char *line, t_struct **filler);
 void			parse_grid_size(char *line, t_struct **filler);
 void			parse_grid_state(char *line, t_struct **filler);

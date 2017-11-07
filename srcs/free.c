@@ -37,7 +37,7 @@ void	reinit_filler(t_struct **filler)
 	t_point **points;
 	t_point **my_points;
 
-	ft_printf_fd(2, "\nStart Reinit\n");
+	// ft_printf_fd(2, "\nStart Reinit\n");
 	(*filler)->piece_line = 0;
 	(*filler)->next_action = PARSE_GRID_SIZE;
 
@@ -45,12 +45,12 @@ void	reinit_filler(t_struct **filler)
 	(*filler)->my_points = NULL;
 	(*filler)->my_pt_nb = 0;
 
-	print_piece((*filler)->piece, "before reinit_piece");
+	// print_piece((*filler)->piece, "before reinit_piece");
 	reinit_piece((*filler)->piece);
-	print_piece((*filler)->piece, "after free_point_list");
+	// print_piece((*filler)->piece, "after free_point_list");
 	if(!(points = (t_point**)ft_memalloc(sizeof(t_point*) * 100)))
 		error_handling("MALLOC");
 	(*filler)->piece->points = points;
 	(*filler)->piece->pt_nb = 0;
-	ft_printf_fd(2, "End Reinit\n");
+	// ft_printf_fd(2, "End Reinit\n");
 }

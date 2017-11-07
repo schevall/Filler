@@ -93,6 +93,7 @@ SRCS_NAME = ft_atoi.c\
 	  ft_printf_tab.c\
 	  ft_strdup_free.c\
 	  ft_supress_quote.c\
+	  ft_sqrt.c\
 
 SRC_PATH = srcs/
 SRCS = $(addprefix $(SRC_PATH), $(SRC_NAME))

@@ -89,10 +89,14 @@ t_point		*can_position_accept_piece(t_struct **filler, t_point *target)
 
 	i = -1;
 	result = NULL;
+	// print_point_list((*filler)->my_points, "in can_position_accept_piece, my points sorted");
 	pos_target = get_possible_coord(filler, target);
-	// print_point_list(pos_target, "before sorted target");
-	sorted_target = sort_points(filler, pos_target, (*filler)->piece->pt_nb + 1);
-	// print_point_list(sorted_target, "before check pos");
+	if (!pos_target[0])
+		return NULL;
+	// print_point_list(pos_target, "possible shoots");
+	// ft_printf_fd(2, "sort point for calcul\n");
+	sorted_target = sort_points(filler, pos_target, p_len(pos_target));
+	// print_point_list(sorted_target, "possibles shoots sorted");
 	// ft_printf_fd(2, "can_position_accept_piece\n");
 	// ft_printf_fd(2, "is point possible: x:%*d, y:%*d\n", 2, x, 2, y);
 	while (sorted_target[++i]) {
@@ -121,17 +125,21 @@ void	shoot(t_struct **filler)
 		shoot = can_position_accept_piece(filler, (*filler)->my_points[i]);
 		if (shoot) {
 			ft_printf_fd(2, "About to shoot x:%d, y:%d\n", shoot->x, shoot->y);
-			ft_printf_fd(2, "About to shoot strat: %d\n", (*filler)->strat);
+			ft_printf_fd(2, "About to shoot strat: %d %d\n", (*filler)->strat_x, (*filler)->strat_y);
+			ft_printf_fd(2, "About to shoot turn: %d\n", (*filler)->turn);
+			print_piece((*filler)->piece, "on Shoot");
 			ft_printf("%d %d\n", shoot->y, shoot->x);
-			if ((*filler)->strat == GO_LD)
-				(*filler)->strat = GO_RU;
-			else if ((*filler)->strat == GO_RU)
-				(*filler)->strat = GO_LD;
+			if ((*filler)->mid_reached)
+				(*filler)->strat_x *= -1;
+			// if ((*filler)->strat == GO_LD)
+			// 	(*filler)->strat = GO_RU;
+			// else if ((*filler)->strat == GO_RU)
+			// 	(*filler)->strat = GO_LD;
 			(*filler)->grid_init = RESET_GRID;
 			(*filler)->next_action = REINIT;
 			(*filler)->turn++;
-			break;
+			return;
 		}
 	}
-	return;
+	ft_printf("%d %d\n", 0, 0);
 }
