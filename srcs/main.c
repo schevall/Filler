@@ -12,12 +12,12 @@
 
 #include "./includes/filler.h"
 
-t_struct *init_struct(t_struct *filler, int fd)
+t_struct	*init_struct(t_struct *filler)
 {
 	t_piece *piece;
 	t_point **points;
 
-	if(!(filler = (t_struct*)ft_memalloc(sizeof(t_struct))))
+	if (!(filler = (t_struct*)ft_memalloc(sizeof(t_struct))))
 		error_handling("MALLOC");
 	filler->piece_line = 0;
 	filler->next_action = PARSE_PLAYER;
@@ -25,36 +25,35 @@ t_struct *init_struct(t_struct *filler, int fd)
 	filler->grid_init = INIT_GRID;
 	filler->my_points = NULL;
 	filler->my_pt_nb = 0;
-	if(!(piece = (t_piece*)ft_memalloc(sizeof(t_piece))))
+	if (!(piece = (t_piece*)ft_memalloc(sizeof(t_piece))))
 		error_handling("MALLOC");
 	filler->piece = piece;
-	if(!(points = (t_point**)ft_memalloc(sizeof(t_point*) * 100)))
+	if (!(points = (t_point**)ft_memalloc(sizeof(t_point*) * 100)))
 		error_handling("MALLOC");
 	filler->piece->points = points;
 	filler->piece->pt_nb = 0;
-	filler->fd = fd;
 	filler->start = 0;
+	filler->main_dir = 1;
 	filler->strat_y = 1;
 	filler->strat_x = 1;
 	filler->mid_reached = 0;
 	filler->turn = 0;
-	return filler;
+	return (filler);
 }
 
-void init_player(char *line, t_struct **filler)
+void		init_player(char *line, t_struct **filler)
 {
-	char **tab;
+	char	**tab;
 
-	tab =ft_strsplit_whitespace(line);
+	tab = ft_strsplit_whitespace(line);
 	(*filler)->player_num = (int)(tab[2][1] - 48);
 	(*filler)->next_action = PARSE_GRID_SIZE;
 }
 
-
-void get_line_type(char *line, t_struct **filler)
+void		get_line_type(char *line, t_struct **filler)
 {
 	if ((*filler)->next_action == REINIT)
-	reinit_filler(filler);
+		reinit_filler(filler);
 	if ((*filler)->next_action == PARSE_PLAYER)
 		init_player(line, filler);
 	else if ((*filler)->next_action == PARSE_GRID_SIZE)
@@ -71,26 +70,13 @@ void get_line_type(char *line, t_struct **filler)
 		shoot(filler);
 }
 
-int		main(int ac, char **av)
+int			main(int ac, char **av)
 {
-	char *line;
-	t_struct *filler;
-	char *shoot;
-	int fd; //to delete
-	FILE *fp;
-	int turn;
+	char		*line;
+	t_struct	*filler;
 
-	fp = fopen("./log.txt", "w");
-	fd = fileno(fp);
-	fd = open("./log.txt", O_WRONLY);
-	filler = init_struct(filler, fd);
+	filler = init_struct(filler);
 	while (get_next_line(0, &line) > 0)
-	{
 		get_line_type(line, &filler);
-		// ft_printf_fd(2, "\nturn :%2d strat: %d\n", filler->turn, filler->strat);
-		if (filler->turn >= 15)
-			exit(0);
-	}
-	ft_printf_fd(2, "ending\n");
 	return (0);
 }

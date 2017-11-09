@@ -49,12 +49,13 @@ typedef struct s_struct
 	t_point		**my_points;
 	int			my_pt_nb;
 	int			grid_init;
+	char 		main_dir;
 	int			strat_x;
 	int			strat_y;
 	int			start;
 	int 		mid_reached;
 	int			turn;
-	int			fd;
+	int			break_turn;
 }				t_struct;
 
 char			**new_grid(int nb);
@@ -69,6 +70,7 @@ t_point			*make_point(int x, int y, int id);
 t_point			**make_point_list(int nb);
 int				count_me_on_map(t_struct **filler);
 t_point			**sort_points(t_struct **filler, t_point **list, int nb);
+int				is_better(t_point *b, t_point *c, t_struct **filler);
 void			shoot(t_struct **filler);
 void			reinit_filler(t_struct **filler);
 void			free_point_list(t_point **points, char *str);

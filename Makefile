@@ -22,6 +22,7 @@ SRC_NAME = main.c\
 			printer.c\
 			new_grid.c\
 			sort_point.c\
+			is_better.c\
 			point_list_len.c\
 
 SRC_PATH = ./srcs/

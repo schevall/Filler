@@ -16,11 +16,9 @@ void	parse_piece_size(char *line, t_struct **filler)
 {
 	char **tab;
 
-	// ft_printf_fd(2, "parse piece_size: line %s\n", line);
 	tab = ft_strsplit_whitespace(line);
 	(*filler)->piece->size[0] = ft_atoi(tab[2]);
 	(*filler)->piece->size[1] = ft_atoi(tab[1]);
-	// ft_printf_fd(2, "parse piece_size: %d %d\n", (*filler)->piece->size[0], (*filler)->piece->size[1]);
 	(*filler)->next_action = PARSE_PIECE_STATE;
 }
 
@@ -31,19 +29,19 @@ void	parse_piece_state(char *line, t_struct **filler)
 
 	x = -1;
 	y = (*filler)->piece_line;
-	// ft_printf_fd(2, "PARSE_PIECE_STATE: %d %d\n", (*filler)->piece->size[0], (*filler)->piece->size[1]);
-	// ft_printf_fd(2, "PARSE_PIECE_STATE: pt_nb: %d\n", (*filler)->piece->pt_nb);
-	// ft_printf_fd(2, "PARSE_PIECE_STATE: y:%d target=:%d \n", y, (*filler)->piece->size[1]);
-	while (line[++x]) {
-		if (line[x] == '*') {
-			(*filler)->piece->points[(*filler)->piece->pt_nb]
-			= make_point(x, y, (*filler)->piece->pt_nb);
+	while (line[++x])
+	{
+		if (line[x] == '*')
+		{
+			(*filler)->piece->points[(*filler)->piece->pt_nb] =
+			make_point(x, y, (*filler)->piece->pt_nb);
 			(*filler)->piece->pt_nb++;
 		}
 	}
 	(*filler)->piece_line++;
-	if ((*filler)->piece_line == (*filler)->piece->size[1]) {
+	if ((*filler)->piece_line == (*filler)->piece->size[1])
+	{
 		(*filler)->next_action = SHOOT;
-		return;
+		return ;
 	}
 }

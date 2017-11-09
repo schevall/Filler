@@ -12,14 +12,12 @@
 
 #include "./includes/filler.h"
 
-
-int		p_len(t_point **list)
+int	p_len(t_point **list)
 {
 	int i;
 
 	i = 0;
 	while (list[i])
 		i++;
-
-	return i;
+	return (i);
 }
