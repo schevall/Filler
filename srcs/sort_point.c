@@ -73,6 +73,6 @@ t_point	**sort_points(t_struct **filler, t_point **list, int nb)
 		best = find_best(sort, list, filler);
 		sort[i] = best;
 	}
-	free_point_list(list, "for sort");
+	free_point_list(list);
 	return (sort);
 }

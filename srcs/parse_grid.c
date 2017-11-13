@@ -31,12 +31,11 @@ void	init_strat(t_struct **filler, t_point **points)
 		(*filler)->strat_y = -1;
 	}
 	if ((*filler)->size[0] <= 20)
-		(*filler)->break_turn = 4;
+		(*filler)->break_turn = 1;
 	else if ((*filler)->size[0] <= 50)
 		(*filler)->break_turn = 3;
 	else
 		(*filler)->break_turn = 4;
-
 }
 
 void	get_my_points(t_struct **filler)

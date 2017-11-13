@@ -78,5 +78,6 @@ int			main(int ac, char **av)
 	filler = init_struct(filler);
 	while (get_next_line(0, &line) > 0)
 		get_line_type(line, &filler);
+	free_all(filler);
 	return (0);
 }

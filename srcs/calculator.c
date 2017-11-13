@@ -102,7 +102,7 @@ t_point		*can_position_accept_piece(t_struct **filler, t_point *target)
 			break ;
 		}
 	}
-	free_point_list(sorted_target, "after can_position_accept_piece");
+	free_point_list(sorted_target);
 	return (result);
 }
 

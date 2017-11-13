@@ -12,7 +12,7 @@
 
 #include "./includes/filler.h"
 
-void	free_point_list(t_point **points, char *str)
+void	free_point_list(t_point **points)
 {
 	int i;
 
@@ -27,7 +27,7 @@ void	reinit_piece(t_piece *piece)
 	piece->size[0] = 0;
 	piece->size[1] = 0;
 	piece->pt_nb = 0;
-	free_point_list(piece->points, "reinit_piece");
+	free_point_list(piece->points);
 }
 
 void	reinit_filler(t_struct **filler)
@@ -37,7 +37,7 @@ void	reinit_filler(t_struct **filler)
 
 	(*filler)->piece_line = 0;
 	(*filler)->next_action = PARSE_GRID_SIZE;
-	free_point_list((*filler)->my_points, "my pt");
+	free_point_list((*filler)->my_points);
 	(*filler)->my_points = NULL;
 	(*filler)->my_pt_nb = 0;
 	reinit_piece((*filler)->piece);
@@ -45,4 +45,12 @@ void	reinit_filler(t_struct **filler)
 		error_handling("MALLOC");
 	(*filler)->piece->points = points;
 	(*filler)->piece->pt_nb = 0;
+}
+
+void	free_all(t_struct *filler)
+{
+	free_point_list(filler->my_points);
+	ft_strdel_tab(filler->grid);
+	free_point_list(filler->piece->points);
+	free(filler->piece);
 }
